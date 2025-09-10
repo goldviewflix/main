@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>KYC Submission</h2>
+
+    {% if kyc_profile %}
+        <p>Your KYC profile has been submitted and is currently <strong>{{ kyc_profile.get_status_display }}</strong>.</p>
+        <p>You will be notified once it has been reviewed.</p>
+
+        <h3>Your Submitted Information:</h3>
+        <ul>
+            <li><strong>Document Type:</strong> {{ kyc_profile.get_document_type_display }}</li>
+            <li><strong>PAN Number:</strong> {{ kyc_profile.pan_number }}</li>
+            {% if kyc_profile.aadhar_number %}
+                <li><strong>Aadhar Number:</strong> {{ kyc_profile.aadhar_number }}</li>
+            {% endif %}
+            {% if kyc_profile.passport_number %}
+                <li><strong>Passport Number:</strong> {{ kyc_profile.passport_number }}</li>
+            {% endif %}
+        </ul>
+
+    {% else %}
+        <p>Please fill out the form below to submit your KYC documents.</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit KYC</button>
+        </form>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -4,5 +4,20 @@
 <div class="container">
     <h2>Participant Dashboard</h2>
     <p>Welcome to your dashboard, {{ user.username }}!</p>
+
+    <div class="kyc-status">
+        <h3>KYC Status</h3>
+        {% if kyc_profile %}
+            <p>Your KYC status is: <strong>{{ kyc_profile.get_status_display }}</strong></p>
+            {% if kyc_profile.status == 'PENDING' %}
+                <p>Your documents are under review.</p>
+            {% elif kyc_profile.status == 'REJECTED' %}
+                <p>Your KYC submission was rejected. Please <a href="{% url 'kyc_submission' %}">resubmit your documents</a>.</p>
+            {% endif %}
+        {% else %}
+            <p>You have not yet submitted your KYC documents.</p>
+            <p><a href="{% url 'kyc_submission' %}" class="get-started-btn">Complete KYC Now</a></p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
